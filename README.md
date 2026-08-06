@@ -196,6 +196,14 @@ Atlas/
 
 ## 6. Perguntas frequentes
 
+**Um link marcado abre normal no meu navegador. Por quê?**
+O Atlas classifica cada link em 3 baldes: **✅ ok**, **❌ quebrado
+confirmado** (a página realmente não existe — GET confirmou 404/410 ou o
+domínio sumiu; inclui posts internos que não foram publicados) e
+**⚠️ não verificável** (Amazon, Mercado Livre, fabricantes e portais
+bloqueiam robôs com 403/503 — o link provavelmente está bom, confira a olho
+só se desconfiar). Só o balde ❌ pede ação.
+
 **A IA inventou um dado de especificação. E agora?**
 Sem chave de busca web (`TAVILY_API_KEY`), a ficha sai do conhecimento do
 modelo. Sempre revise o JSON da ficha antes de escrever — e, para máxima

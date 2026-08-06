@@ -186,6 +186,25 @@ finally:
     for f in _config_artigos.PASTA_ARTIGOS.glob("artigo-teste*"):
         f.unlink()
 
+print("\n== analisador: classificação DNS / link interno ==")
+from agente import config
+
+err_dns = Exception("Failed to establish a new connection: "
+                    "[Errno -2] Name or service not known")
+testa("detecta falha de DNS (domínio inexistente)",
+      analisador._falha_dns(err_dns))
+testa("conexão recusada NÃO é falha de DNS",
+      not analisador._falha_dns(Exception("Connection refused")))
+testa("link do próprio site é interno",
+      analisador._eh_interno(config.SITE_URL + "/qualquer-post"))
+testa("www.no domínio não confunde",
+      analisador._eh_interno("https://www." +
+                             config.SITE_URL.split("://")[1] + "/post"))
+testa("link externo não é interno",
+      not analisador._eh_interno("https://www.amazon.com.br/dp/X"))
+testa("encurtador de afiliado não é interno",
+      not analisador._eh_interno("https://link.amazon/B0abc"))
+
 print("\n== config ==")
 from agente import config
 

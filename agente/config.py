@@ -58,6 +58,13 @@ USER_AGENT = (
     "AtlasBot/1.0 (+agente editorial interno da Curadoria Prime; "
     "verificacao de links e conteudo)"
 )
+# Navegador de verdade: usado ao TESTAR links de terceiros, pois muitos
+# sites (Amazon, fabricantes, portais) bloqueiam requisições com cara de
+# robô e devolvem 403/503/404 falso para crawlers.
+BROWSER_UA = (
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/126.0.0.0 Safari/537.36"
+)
 PAUSA_ENTRE_POSTS = 1.0      # segundos (educação com o próprio servidor)
 PAUSA_ENTRE_LINKS = 0.2      # segundos
 TIMEOUT_HTTP = 12            # segundos por requisição

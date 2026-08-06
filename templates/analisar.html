@@ -24,28 +24,37 @@ desatualização. Demora alguns minutos, dependendo do número de artigos e link
 <div class="cards">
   <div class="card"><h3>Artigos</h3><p class="numero">{{ relatorio.resumo.total_artigos }}</p></div>
   <div class="card"><h3>Links verificados</h3><p class="numero">{{ relatorio.resumo.links_unicos_verificados }}</p></div>
-  <div class="card"><h3>Links quebrados</h3><p class="numero ruim">{{ relatorio.resumo.links_quebrados }}</p></div>
+  <div class="card"><h3>Quebrados confirmados</h3><p class="numero ruim">{{ relatorio.resumo.links_quebrados }}</p></div>
+  <div class="card"><h3>Não verificáveis</h3><p class="numero atencao">{{ relatorio.resumo.get('links_indeterminados', 0) }}</p></div>
   <div class="card"><h3>Desatualizados</h3><p class="numero atencao">{{ relatorio.resumo.artigos_desatualizados }}</p></div>
 </div>
+<p class="muted">❌ <b>quebrado confirmado</b> = a página realmente não existe
+(GET confirmou 404/410 ou o domínio sumiu) · ⚠️ <b>não verificável</b> = o
+site bloqueia robôs (Amazon, fabricantes...); normalmente abre no navegador,
+confira a olho só se desconfiar.</p>
 
 <table>
   <thead><tr>
-    <th>Artigo</th><th>Última modif.</th><th>Links quebrados</th><th>Sinais de desatualização</th>
+    <th>Artigo</th><th>Última modif.</th><th>Links</th><th>Sinais de desatualização</th>
   </tr></thead>
   <tbody>
-  {% for art in relatorio.artigos %}
-  <tr class="{{ 'linha-problema' if art.links_quebrados or art.sinais_desatualizacao else '' }}">
-    <td><a href="{{ art.url }}" target="_blank">{{ art.titulo[:60] }}</a></td>
-    <td>{{ art.ultima_modificacao or '—' }}</td>
+  {% for rel_art in relatorio.artigos %}
+  <tr class="{{ 'linha-problema' if rel_art.links_quebrados or rel_art.sinais_desatualizacao else '' }}">
+    <td><a href="{{ rel_art.url }}" target="_blank">{{ rel_art.titulo[:60] }}</a></td>
+    <td>{{ rel_art.ultima_modificacao or '—' }}</td>
     <td>
-      {% if art.links_quebrados %}
-        {% for l in art.links_quebrados %}
-          <div class="ruim">❌ {{ l.url[:55] }}<br><small>{{ l.motivo }}</small></div>
-        {% endfor %}
-      {% else %}<span class="ok">✅ ok</span>{% endif %}
+      {% for l in rel_art.links_quebrados %}
+        <div class="ruim">❌ {{ l.url[:55] }}<br><small>{{ l.motivo }}</small></div>
+      {% endfor %}
+      {% for l in rel_art.get('links_indeterminados', []) %}
+        <div class="atencao">⚠️ {{ l.url[:55] }}<br><small>{{ l.motivo }}</small></div>
+      {% endfor %}
+      {% if not rel_art.links_quebrados and not rel_art.get('links_indeterminados', []) %}
+        <span class="ok">✅ ok</span>
+      {% endif %}
     </td>
     <td>
-      {% for s in art.sinais_desatualizacao %}
+      {% for s in rel_art.sinais_desatualizacao %}
         <div class="atencao">🕐 {{ s }}</div>
       {% endfor %}
     </td>

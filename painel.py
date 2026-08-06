@@ -158,12 +158,16 @@ def _resultado_html(job: dict) -> str:
     try:
         if t == "analisar":
             res = r["resumo"]
+            ind = res.get("links_indeterminados", 0)
             return (
                 f"<h3>📊 Resumo</h3><ul>"
                 f"<li>Artigos analisados: <b>{res['total_artigos']}</b></li>"
                 f"<li>Links verificados: <b>{res['links_unicos_verificados']}</b></li>"
-                f"<li>Links quebrados: <b class='ruim'>{res['links_quebrados']}</b> "
+                f"<li>Links quebrados confirmados: <b class='ruim'>"
+                f"{res['links_quebrados']}</b> "
                 f"(em {res['artigos_com_link_quebrado']} artigos)</li>"
+                f"<li>Não verificáveis (sites que bloqueiam robôs): "
+                f"<b class='atencao'>{ind}</b></li>"
                 f"<li>Artigos desatualizados: "
                 f"<b class='atencao'>{res['artigos_desatualizados']}</b></li></ul>"
                 f"<p><a class='botao' href='{url_for('pagina_analisar')}'>"
