@@ -1,0 +1,12 @@
+# Segredos e ambiente local
+.env
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Relatórios antigos podem ficar fora do Git se quiser (descomente):
+# dados/analises/*.json

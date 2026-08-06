@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block titulo %}Analisar site{% endblock %}
+{% block conteudo %}
+<h1>🔎 Análise do site</h1>
+<p class="muted">Varre todos os artigos: testa cada link e procura sinais de
+desatualização. Demora alguns minutos, dependendo do número de artigos e links.</p>
+
+<form method="post" action="{{ url_for('analisar_iniciar') }}">
+  <button class="botao grande" type="submit">▶️ Analisar agora</button>
+</form>
+
+<h2>Relatórios anteriores</h2>
+{% if arquivos %}
+<ul class="lista-limpa">
+  {% for a in arquivos %}
+  <li><a href="{{ url_for('pagina_analisar', ver=a) }}">{{ a }}</a>
+      {% if a == nome_atual %} (aberto){% endif %}</li>
+  {% endfor %}
+</ul>
+{% else %}<p class="muted">Nenhum relatório ainda.</p>{% endif %}
+
+{% if relatorio %}
+<h2>📊 {{ nome_atual }}</h2>
+<div class="cards">
+  <div class="card"><h3>Artigos</h3><p class="numero">{{ relatorio.resumo.total_artigos }}</p></div>
+  <div class="card"><h3>Links verificados</h3><p class="numero">{{ relatorio.resumo.links_unicos_verificados }}</p></div>
+  <div class="card"><h3>Links quebrados</h3><p class="numero ruim">{{ relatorio.resumo.links_quebrados }}</p></div>
+  <div class="card"><h3>Desatualizados</h3><p class="numero atencao">{{ relatorio.resumo.artigos_desatualizados }}</p></div>
+</div>
+
+<table>
+  <thead><tr>
+    <th>Artigo</th><th>Última modif.</th><th>Links quebrados</th><th>Sinais de desatualização</th>
+  </tr></thead>
+  <tbody>
+  {% for art in relatorio.artigos %}
+  <tr class="{{ 'linha-problema' if art.links_quebrados or art.sinais_desatualizacao else '' }}">
+    <td><a href="{{ art.url }}" target="_blank">{{ art.titulo[:60] }}</a></td>
+    <td>{{ art.ultima_modificacao or '—' }}</td>
+    <td>
+      {% if art.links_quebrados %}
+        {% for l in art.links_quebrados %}
+          <div class="ruim">❌ {{ l.url[:55] }}<br><small>{{ l.motivo }}</small></div>
+        {% endfor %}
+      {% else %}<span class="ok">✅ ok</span>{% endif %}
+    </td>
+    <td>
+      {% for s in art.sinais_desatualizacao %}
+        <div class="atencao">🕐 {{ s }}</div>
+      {% endfor %}
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

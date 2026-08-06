@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block titulo %}Painel{% endblock %}
+{% block conteudo %}
+<h1>Painel do Atlas</h1>
+<p class="muted">Site monitorado: <a href="{{ site }}" target="_blank">{{ site }}</a></p>
+
+<section class="cards">
+  <div class="card">
+    <h3>🧠 Inteligência artificial</h3>
+    <p>{{ status_ia }}</p>
+  </div>
+  <div class="card">
+    <h3>🌐 WordPress</h3>
+    <p>{{ status_wp }}</p>
+  </div>
+  <div class="card">
+    <h3>🔍 Busca web (Tavily)</h3>
+    <p>{{ status_web }}</p>
+  </div>
+</section>
+
+{% if jobs_rodando %}
+<div class="flash">⏳ Há tarefa em andamento:
+  {% for j in jobs_rodando %}
+    <a href="{{ url_for('pagina_job', jid=j.id) }}">acompanhar {{ j.tipo }}</a>
+  {% endfor %}
+</div>
+{% endif %}
+
+<section class="cards">
+  <div class="card">
+    <h3>🔎 Última análise do site</h3>
+    {% if ultima %}
+      <p class="muted">{{ ultima.data_analise }}</p>
+      <p>❌ Links quebrados: <b class="ruim">{{ ultima.resumo.links_quebrados }}</b></p>
+      <p>🕐 Artigos desatualizados: <b class="atencao">{{ ultima.resumo.artigos_desatualizados }}</b></p>
+      <a class="botao" href="{{ url_for('pagina_analisar') }}">Abrir análises</a>
+    {% else %}
+      <p>Nenhuma análise ainda.</p>
+      <a class="botao" href="{{ url_for('pagina_analisar') }}">Fazer a 1ª análise</a>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>📅 Próximas pautas</h3>
+    {% if pautas %}
+      <ul class="lista-limpa">
+      {% for p in pautas %}
+        <li><b>{{ p.data_programada }}</b> — {{ p.titulo }}</li>
+      {% endfor %}
+      </ul>
+      <a class="botao" href="{{ url_for('pagina_pautas') }}">Ver calendário</a>
+    {% else %}
+      <p>Nenhuma pauta programada.</p>
+      <a class="botao" href="{{ url_for('pagina_pautas') }}">Sugerir pautas</a>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>📦 Acervo</h3>
+    <p>📋 Fichas técnicas: <b>{{ fichas|length }}</b></p>
+    <p>📄 Artigos gerados: <b>{{ artigos|length }}</b></p>
+    <a class="botao" href="{{ url_for('pagina_escrever') }}">Escrever artigo</a>
+  </div>
+</section>
+
+<h2>Fluxo de trabalho</h2>
+<ol class="fluxo">
+  <li>🔎 <b>Analisar</b> o site (links quebrados e artigos velhos)</li>
+  <li>📅 <b>Sugerir pautas</b> e montar o calendário</li>
+  <li>📋 <b>Pesquisar</b> o produto (ficha técnica)</li>
+  <li>⭐ Colar as <b>notas das lojas</b> (Amazon/Mercado Livre)</li>
+  <li>✍️ <b>Escrever</b> o artigo no padrão do site</li>
+  <li>📄 Revisar e enviar como <b>rascunho</b> ao WordPress</li>
+</ol>
+{% endblock %}

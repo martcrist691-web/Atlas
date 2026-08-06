@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block titulo %}Escrever artigo{% endblock %}
+{% block conteudo %}
+<h1>✍️ Escrever artigo</h1>
+
+{% if not fichas %}
+<div class="flash">Você ainda não tem fichas técnicas.
+  <a href="{{ url_for('pagina_pesquisar') }}">Pesquise um produto primeiro</a>.</div>
+{% endif %}
+
+<form method="post" action="{{ url_for('escrever_iniciar') }}" class="form-caixa">
+  <label for="ficha">Ficha técnica (produto)</label>
+  <select id="ficha" name="ficha" required>
+    <option value="">— escolha —</option>
+    {% for f in fichas %}<option value="{{ f }}">{{ f }}</option>{% endfor %}
+  </select>
+
+  <label for="pauta">Vincular a uma pauta (opcional)</label>
+  <select id="pauta" name="pauta">
+    <option value="">— nenhuma —</option>
+    {% for p in pautas %}
+    <option value="{{ p.id }}">[{{ p.id }}] {{ p.titulo }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="link_amazon">Link de afiliado — Amazon</label>
+  <input type="text" id="link_amazon" name="link_amazon"
+         placeholder="{{'{{LINK_AMAZON}}'}} (deixe vazio p/ placeholder)">
+
+  <label for="link_ml">Link de afiliado — Mercado Livre</label>
+  <input type="text" id="link_ml" name="link_ml"
+         placeholder="{{'{{LINK_ML}}'}} (deixe vazio p/ placeholder)">
+
+  <label for="notas_arquivo">⭐ Notas das lojas — arquivo .txt</label>
+  <select id="notas_arquivo" name="notas_arquivo">
+    <option value="">— nenhum —</option>
+    {% for n in notas_arquivos %}<option value="{{ n }}">{{ n }}</option>{% endfor %}
+  </select>
+
+  <label for="notas_texto">…ou cole as notas aqui (tem prioridade sobre o arquivo)</label>
+  <textarea id="notas_texto" name="notas_texto" rows="6"
+    placeholder="AMAZON&#10;nota: 4,6&#10;total_avaliacoes: +450&#10;..."></textarea>
+
+  <label for="extras">Instruções extras ao redator (opcional)</label>
+  <input type="text" id="extras" name="extras"
+         placeholder="ex.: enfatize custo-benefício; público leigo">
+
+  <button class="botao grande" type="submit">✍️ Escrever artigo completo</button>
+</form>
+<p class="muted">Demora 1–3 minutos. O HTML sai em
+<code>dados/artigos/</code> e pode ser visualizado em
+<a href="{{ url_for('pagina_artigos') }}">Artigos</a>.</p>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titulo %}Tarefa em andamento{% endblock %}
+{% block conteudo %}
+<h1>⏳ Tarefa: {{ job.tipo }} <span id="status" class="badge rodando">rodando</span></h1>
+<p class="muted">Início: {{ job.inicio }} · não feche esta aba enquanto roda.</p>
+
+<pre id="log" class="console">iniciando...</pre>
+
+<div id="resultado" class="resultado"></div>
+
+<p><a id="voltar" class="botao" style="display:none" href="#">← Continuar</a></p>
+
+<script>
+const JID = "{{ job.id }}";
+async function poll() {
+  try {
+    const r = await fetch("/api/jobs/" + JID);
+    const d = await r.json();
+    document.getElementById("log").textContent = d.log || "(sem saída ainda...)";
+    const badge = document.getElementById("status");
+    badge.textContent = d.status === "rodando" ? "rodando…" : d.status;
+    badge.className = "badge " + d.status;
+    if (d.resultado_html) {
+      document.getElementById("resultado").innerHTML = d.resultado_html;
+    }
+    if (d.status === "rodando") {
+      setTimeout(poll, 2000);
+    } else {
+      document.querySelector("h1").firstChild.textContent = "Tarefa: {{ job.tipo }} ";
+      const v = document.getElementById("voltar");
+      v.href = d.voltar;
+      v.style.display = "inline-block";
+      const log = document.getElementById("log");
+      log.scrollTop = log.scrollHeight;
+    }
+  } catch (e) {
+    setTimeout(poll, 4000);
+  }
+}
+poll();
+</script>
+{% endblock %}

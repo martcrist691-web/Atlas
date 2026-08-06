@@ -1,0 +1,28 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Atlas: abrir painel no navegador",
+      "type": "shell",
+      "command": ".venv/bin/python painel.py",
+      "windows": { "command": ".venv\\Scripts\\python.exe painel.py" },
+      "linux": { "command": ".venv/bin/python painel.py" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Atlas: verificar ambiente",
+      "type": "shell",
+      "command": ".venv/bin/python atlas.py status",
+      "windows": { "command": ".venv\\Scripts\\python.exe atlas.py status" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Atlas: analisar site",
+      "type": "shell",
+      "command": ".venv/bin/python atlas.py analisar",
+      "windows": { "command": ".venv\\Scripts\\python.exe atlas.py analisar" },
+      "problemMatcher": []
+    }
+  ]
+}

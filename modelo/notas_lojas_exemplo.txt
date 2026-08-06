@@ -1,0 +1,32 @@
+============================================================
+ NOTAS DAS LOJAS — (escreva aqui o nome do produto)
+============================================================
+ COMO USAR:
+ 1. Abra a página do produto na Amazon e no Mercado Livre.
+ 2. Copie os números reais para os campos abaixo (apague os exemplos).
+ 3. Salve este arquivo em dados/pesquisas/ com o nome:
+        notas_<nome-do-produto>.txt
+    Ex.: notas_redmi-note-15-pro.txt
+ 4. O Atlas detecta sozinho na hora de escrever — ou entregue com:
+        python atlas.py escrever --ficha "produto" --notas dados/pesquisas/notas_<produto>.txt
+============================================================
+
+AMAZON
+nota: 4,6
+total_avaliacoes: +450
+5_estrelas: 78%
+1_a_4_estrelas: 22%
+
+MERCADO LIVRE
+nota: 4,7
+total_opinioes: +1.550
+5_estrelas: 82%
+4_estrelas: 13%
+1_a_3_estrelas: 5%
+resumo_ia_ml: "A tela AMOLED é considerada espetacular, com cores vibrantes. A câmera de 200MP surpreende pela nitidez..."
+citacao_avaliacao: "Celular premium por preço de intermediário. A câmera de 200MP é sensacional..." (avaliação verificada)
+
+OBSERVAÇÕES (opcional — qualquer coisa útil que você viu nas lojas):
+- frete grátis / envio Full disponível
+- loja oficial da marca
+- outras citacoes marcantes de compradores

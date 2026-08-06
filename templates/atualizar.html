@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titulo %}Atualizar artigo{% endblock %}
+{% block conteudo %}
+<h1>♻️ Atualizar artigo já publicado</h1>
+<p class="muted">Baixa o artigo direto do WordPress (ou usa o arquivo local)
+e reescreve mantendo o padrão. Gera <code>&lt;slug&gt;_ATUALIZADO.html</code>
+para você revisar e republicar.</p>
+
+<form method="post" action="{{ url_for('atualizar_iniciar') }}" class="form-caixa">
+  <label for="slug">Slug do artigo no site</label>
+  <input type="text" id="slug" name="slug" required
+         placeholder="ex.: moto-g56-5g-review">
+
+  <label for="motivo">O que atualizar?</label>
+  <input type="text" id="motivo" name="motivo" required
+         placeholder="ex.: ano 2026, preços novos e HyperOS 2">
+
+  <label for="notas_arquivo">⭐ Notas atualizadas das lojas — arquivo .txt</label>
+  <select id="notas_arquivo" name="notas_arquivo">
+    <option value="">— nenhum —</option>
+    {% for n in notas_arquivos %}<option value="{{ n }}">{{ n }}</option>{% endfor %}
+  </select>
+
+  <label for="notas_texto">…ou cole as notas aqui</label>
+  <textarea id="notas_texto" name="notas_texto" rows="5"></textarea>
+
+  <button class="botao grande" type="submit">♻️ Gerar versão atualizada</button>
+</form>
+{% endblock %}

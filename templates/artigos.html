@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block titulo %}Artigos{% endblock %}
+{% block conteudo %}
+<h1>📄 Artigos gerados</h1>
+
+{% if not wp_ok %}
+<div class="flash">WordPress não configurado no .env — os botões de
+publicação não vão funcionar até preencher WP_USER e WP_APP_PASSWORD.</div>
+{% endif %}
+
+{% if artigos %}
+<table>
+  <thead><tr>
+    <th>Artigo</th><th>Pendências</th><th>Ações</th><th>Publicar</th>
+  </tr></thead>
+  <tbody>
+  {% for a in artigos %}
+  <tr>
+    <td>
+      <b>{{ a.titulo[:70] }}</b><br>
+      <small class="muted">{{ a.slug }}.html
+        {% if a.eh_atualizacao %}· ♻️ atualização{% endif %}</small>
+    </td>
+    <td>
+      {% if a.pendencias %}
+        <span class="atencao">⚠️ {{ a.pendencias }}</span>
+      {% else %}
+        <span class="ok">✅ pronto</span>
+      {% endif %}
+    </td>
+    <td>
+      <a class="botao" target="_blank"
+         href="{{ url_for('preview_artigo', slug=a.slug) }}">👁️ Ver</a>
+      <a class="botao"
+         href="{{ url_for('download_artigo', slug=a.slug) }}">⬇️ Baixar</a>
+    </td>
+    <td>
+      <form method="post"
+            action="{{ url_for('publicar_artigo', slug=a.slug) }}"
+            class="form-linha">
+        <select name="status">
+          <option value="draft">rascunho</option>
+          <option value="publish">publicado</option>
+        </select>
+        <button class="botao" type="submit">🚀 Enviar ao WP</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="muted">Sempre envie como <b>rascunho</b> primeiro, revise no
+painel do WordPress e programe a publicação por lá.</p>
+{% else %}
+<p class="muted">Nenhum artigo gerado ainda.
+  <a href="{{ url_for('pagina_escrever') }}">Escrever o primeiro</a>.</p>
+{% endif %}
+{% endblock %}

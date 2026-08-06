@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block titulo %}Pautas{% endblock %}
+{% block conteudo %}
+<h1>📅 Calendário editorial</h1>
+
+<form method="post" action="{{ url_for('pautas_gerar') }}" class="form-linha">
+  <label for="num">Sugerir</label>
+  <input type="number" id="num" name="num" value="8" min="1" max="20">
+  <label>novas pautas com a IA</label>
+  <button class="botao grande" type="submit">🧠 Gerar sugestões</button>
+</form>
+<p class="muted">A IA considera os artigos já publicados, os desatualizados
+(se houver análise recente) e o calendário sazonal.</p>
+
+{% if pautas %}
+<table>
+  <thead><tr>
+    <th>#</th><th>Data</th><th>Pauta</th><th>Tipo</th><th>Prioridade</th><th>Status</th>
+  </tr></thead>
+  <tbody>
+    {% for p in pautas %}
+    <tr>
+      <td>{{ p.id }}</td>
+      <td><b>{{ p.data_programada }}</b></td>
+      <td>{{ p.titulo }}<br><small class="muted">{{ p.justificativa }}</small></td>
+      <td>{{ p.tipo }}</td>
+      <td><span class="badge prio-{{ p.prioridade }}">{{ p.prioridade }}</span></td>
+      <td>{{ p.status }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p class="muted">Arquivo: dados/pautas/pautas.csv (abre no Excel/Sheets)</p>
+{% else %}
+<p class="muted">Nenhuma pauta ainda — gere as primeiras sugestões acima.</p>
+{% endif %}
+{% endblock %}

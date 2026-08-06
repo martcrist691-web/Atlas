@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}Atlas{% endblock %} — Curadoria Prime</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='painel.css') }}">
+</head>
+<body>
+<header>
+  <a class="logo" href="{{ url_for('index') }}">🤖 <b>ATLAS</b>
+    <small>agente editorial</small></a>
+  <nav>
+    <a href="{{ url_for('index') }}">Início</a>
+    <a href="{{ url_for('pagina_analisar') }}">🔎 Analisar</a>
+    <a href="{{ url_for('pagina_pautas') }}">📅 Pautas</a>
+    <a href="{{ url_for('pagina_pesquisar') }}">📋 Pesquisar</a>
+    <a href="{{ url_for('pagina_escrever') }}">✍️ Escrever</a>
+    <a href="{{ url_for('pagina_atualizar') }}">♻️ Atualizar</a>
+    <a href="{{ url_for('pagina_artigos') }}">📄 Artigos</a>
+  </nav>
+</header>
+
+<main>
+  {% with mensagens = get_flashed_messages() %}
+    {% if mensagens %}
+      {% for m in mensagens %}<div class="flash">⚠️ {{ m }}</div>{% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% block conteudo %}{% endblock %}
+</main>
+
+<footer>Atlas · roda só na sua máquina (127.0.0.1) · uma tarefa por vez</footer>
+</body>
+</html>

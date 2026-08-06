@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prévia: {{ meta.titulo or slug }}</title>
+  {% if meta.descricao %}<meta name="description" content="{{ meta.descricao }}">{% endif %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='painel.css') }}">
+</head>
+<body class="preview-body">
+<div class="preview-barra">
+  <span>👁️ <b>Prévia</b> · {{ slug }}.html
+    {% if meta.descricao %}· meta: {{ meta.descricao[:90] }}{% endif %}
+  </span>
+  <span>
+    <a class="botao" href="{{ url_for('download_artigo', slug=slug) }}">⬇️ Baixar</a>
+    <a class="botao" href="{{ url_for('pagina_artigos') }}">← Voltar</a>
+  </span>
+</div>
+<article class="post-content">
+  <h1>{{ meta.titulo or slug }}</h1>
+  {{ conteudo | safe }}
+</article>
+</body>
+</html>

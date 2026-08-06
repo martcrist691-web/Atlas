@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block titulo %}Pesquisar produto{% endblock %}
+{% block conteudo %}
+<h1>📋 Pesquisar produto</h1>
+<p class="muted">Gera a ficha técnica completa (especificações, prós/contras,
+concorrentes, FAQ, nota sugerida) e salva em <code>dados/pesquisas/</code>.</p>
+
+<form method="post" action="{{ url_for('pesquisar_iniciar') }}">
+  <label for="produto">Nome do produto</label>
+  <input type="text" id="produto" name="produto" required
+         placeholder="ex.: Redmi Note 15 Pro" class="campo-largo">
+  <button class="botao grande" type="submit">🔎 Pesquisar</button>
+</form>
+
+<h2>Fichas já pesquisadas</h2>
+{% if fichas %}
+<ul class="lista-limpa">
+  {% for f in fichas %}<li>📋 {{ f }}</li>{% endfor %}
+</ul>
+<p class="muted">Revise os arquivos JSON na pasta antes de escrever o artigo.</p>
+{% else %}
+<p class="muted">Nenhuma ficha ainda.</p>
+{% endif %}
+{% endblock %}
